@@ -1,13 +1,4 @@
-active_query.dart
-=================
-
-`activeQuery()` allows you to easily watch the DOM for elements that match and
-un-match CSS selectors. `activeQuery()` is much easier to use than Mutation
-Observers for the specific case of watching which objects match a CSS selector.
-
-## Example
-
-```dart
+import 'dart:async';
 import 'dart:html';
 import 'package:active_query/active_query.dart';
 
@@ -36,30 +27,3 @@ main() {
     querySelector('div.two').attributes.remove('important');
   }));
 }
-```
-
-```html
-<html>
-  <body>
-    <div class="one" important></div>
-    <div class="two"></div>
-  </body>
-</html>
-```
-
-Prints the following:
-
-```
-one is now important
-Important elements: (one)
-first mutation
-two is now important
-Important elements: (one, two)
-second mutation
-one is no longer important
-Important elements: (two)
-third mutation
-two is no longer important
-Important elements: ()
-
-```

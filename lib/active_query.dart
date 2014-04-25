@@ -66,6 +66,12 @@ _removeObserver(Node node) {
   record.count --;
 }
 
+/**
+ * Creates a new [ActiveQuery] that listens for changes to [node] and provides
+ * a [Stream] of [Element]s that newly match [selector], a `Stream` of
+ * `Element`s that previously matched `selector`, and a `Stream` of the set of
+ * `Element`s that currently match `selector`.
+ */
 ActiveQuery activeQuery(String selector, {Node node}) {
   node = node == null ? document : node;
   var queries = _queries[node];
@@ -126,10 +132,34 @@ class ActiveQuery {
     _listenerCount--;
   }
 
+  /**
+   * A [Stream] of [Element]s that match [selector].
+   *
+   * As elements are added or modified, they are checked against `selector`
+   * using [Element.matches]. If the new or modified element matches, it's
+   * added to this Stream.
+   *
+   * When an `ActiveQuery` is first created it also queries [node] with
+   * `selector` so that this stream is primed with the set of matching elements
+   * even if no mutations occur.
+   */
   Stream<Element> get added => _added.stream;
+
+  /**
+   * A [Stream] of [Element]s that used to match [selector], but don't after
+   * either being removed from the DOM, or by having an attribute changed.
+   */
   Stream<Element> get removed => _removed.stream;
+
+  /**
+   * The current set of elements that match [selector].
+   */
   Stream<Set<Element>> get elements => _elements.stream;
 
+  /**
+   * Closes the query and frees resources. This removes the mutation observer
+   * if no other query is using the same observer, and closes all streams.
+   */
   close() {
     _queries[node].remove(this);
     if (_listenerCount > 0) {
