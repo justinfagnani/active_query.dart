@@ -1,0 +1,9 @@
+name:  active_query
+description: >
+  active_query allows you to easily watch the DOM for elements that match and
+  un-match CSS selectors.
+version: 0.1.0-dev
+author: Dart Team <misc@dartlang.org>
+homepage: https://github.com/justinfagnani/active_query.dart
+dev_dependencies:
+  unittest: '>= 0.10.0 < 0.11.0'
